@@ -21,11 +21,19 @@ import pandas as pd
 import numpy as np
 
 def simulate(startDate, endDate, tickers, allocations):
-	vol = 0
-	daily_ret = 1
-	sharpe = 2
-	cum_ret = 3
-	return(vol, daily_ret, sharpe, cum_ret)
+    #tradingDays = getTradingDays(startDate, endDate)
+    vol = 0
+    daily_ret = 1
+    sharpe = 2
+    cum_ret = 3
+    return(vol, daily_ret, sharpe, cum_ret)
+
+def getTradingDays(startDate, endDate):
+    timeofday = dt.timedelta(hours=16)
+
+    # Get a list of trading days between the start and the end.
+    tradingDays = du.getNYSEdays(startDate, endDate, timeofday)
+    return tradingDays
 
 # >>> import collections
 # >>> point = collections.namedtuple('Point', ['x', 'y'])
