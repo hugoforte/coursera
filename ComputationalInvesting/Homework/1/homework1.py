@@ -35,6 +35,14 @@ def getTradingDays(startDate, endDate):
     tradingDays = du.getNYSEdays(startDate, endDate, timeofday)
     return tradingDays
 
+def getAdjustedCloseValuesForTicker(startDate, endDate, ticker):
+    tradingDays = getTradingDays(startDate, endDate)
+    # Keys to be read from the data, it is good to read everything in one go.
+    keys = ['close']
+    dataObject = da.DataAccess('Yahoo')
+    data = dataObject.get_data(tradingDays, ticker, keys)
+
+    return data[0].values[0:len(tradingDays),0]
 # >>> import collections
 # >>> point = collections.namedtuple('Point', ['x', 'y'])
 # >>> p = point(1, y=2)

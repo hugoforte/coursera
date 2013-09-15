@@ -27,7 +27,7 @@ class TestSequenceFunctions(unittest.TestCase):
 
         self.assertEquals(1, 1)
 
-    def test_use_getNYSEDays_from_library(self):
+    def test_getNYSEDays_from_library(self):
 
         startDate = dt.datetime(2012, 2, 10)
         endDate = dt.datetime(2012, 2, 24)
@@ -36,7 +36,7 @@ class TestSequenceFunctions(unittest.TestCase):
 
         self.assertEquals(len(tradingDays),9)
 
-    def test_use_getNYSEDays_from_homework(self):
+    def test_getNYSEDays_from_homework(self):
         startDate = dt.datetime(2011, 1, 1)
         endDate = dt.datetime(2011, 12, 31)
 
@@ -44,6 +44,19 @@ class TestSequenceFunctions(unittest.TestCase):
         tradingDays = homework1.getTradingDays(startDate, endDate)
 
         self.assertEquals(len(tradingDays),252)
+
+    def test_get_adjusted_closing_values_for_equities(self):
+        startDate = dt.datetime(2011, 1, 1)
+        endDate = dt.datetime(2011, 12, 31)
+        tickers = ["AAPL", "GLD", "GOOG", "$SPX"]
+
+        for ticker in tickers:
+            adjustedCloseValues = homework1.getAdjustedCloseValuesForTicker(startDate, endDate, [ticker])
+            self.assertEquals(len(adjustedCloseValues),252)
+
+
+
+                    
 
 if __name__ == '__main__':
     unittest.main()
