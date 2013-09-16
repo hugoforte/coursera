@@ -13,6 +13,8 @@ import QSTK.qstkutil.qsdateutil as du
 import QSTK.qstkutil.tsutil as tsu
 import QSTK.qstkutil.DataAccess as da
 import collections
+import math 
+from math import sqrt
 
 # Third Party Imports
 import datetime as dt
@@ -44,10 +46,9 @@ def simulate(startDate, endDate, tickers, allocations):
     # calculate average daily return
     tsu.returnize0(finalNormalizedData)
     volatility = np.std(finalNormalizedData)
-    avg_daily_return = np.average(finalNormalizedData)
-    sharpe = 2
+    avg_daily_return = np.mean(finalNormalizedData)
+    sharpe = (avg_daily_return * 252 - 0) / ( volatility * sqrt(252) ) 
     
-
     return(volatility, avg_daily_return, sharpe, cum_ret)
 
 def getTradingDays(startDate, endDate):
