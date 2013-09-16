@@ -101,7 +101,19 @@ class TestSequenceFunctions(unittest.TestCase):
         self.assertAlmostEqual(sharpe, 1.29889334008)
         self.assertAlmostEqual(vol, 0.00924299255937)
         self.assertAlmostEqual(daily_ret, 0.000756285585593)
-        self.assertAlmostEqual(cum_ret, 1.1960583568)                    
+        self.assertAlmostEqual(cum_ret, 1.1960583568)
+
+    def test_get_all_allocations(self):
+        allocations = homework1.getAllPossibleAllocations();
+        self.assertEqual(len(allocations), 286)
+
+    def test_find_best_allocation(self):
+        tickers =  ['BRCM', 'TXN', 'AMD', 'ADI'] 
+        startDate = dt.datetime(2011, 1, 1)
+        endDate = dt.datetime(2011, 12, 31)
+        allocation = homework1.find_best_allocation(startDate, endDate, tickers)  
+        
+        self.assertEquals(allocation, [0,0,0,1])
 
 if __name__ == '__main__':
     unittest.main()

@@ -14,6 +14,7 @@ import QSTK.qstkutil.tsutil as tsu
 import QSTK.qstkutil.DataAccess as da
 import collections
 import math 
+import itertools
 from math import sqrt
 
 # Third Party Imports
@@ -50,6 +51,27 @@ def simulate(startDate, endDate, tickers, allocations):
     sharpe = (avg_daily_return * 252 - 0) / ( volatility * sqrt(252) ) 
     
     return(volatility, avg_daily_return, sharpe, cum_ret)
+
+def find_best_allocation(startDate, endDate, tickers):
+
+    allocations = getAllPossibleAllocations()
+    bestSharpeSoFar = 0
+    bestAllocationSoFar = []
+    for allocation in allocations:
+        vol, daily_ret, sharpe, cum_ret = simulate(startDate, endDate, tickers, allocation)
+        if sharpe >= bestSharpeSoFar:
+            print 'found better allocation:'
+            print sharpe
+            print allocation
+            bestAllocationSoFar = allocation
+            bestSharpeSoFar = sharpe
+
+    return bestAllocationSoFar
+
+def getAllPossibleAllocations():
+    poss = itertools.product(np.arange(0, 1.1, 0.1), repeat=4)
+    return filter(lambda x: round(sum(x), 1) == 1, poss)    
+
 
 def getTradingDays(startDate, endDate):
     timeofday = dt.timedelta(hours=16)
