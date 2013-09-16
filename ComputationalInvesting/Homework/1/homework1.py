@@ -43,6 +43,13 @@ def getAdjustedCloseValuesForTicker(startDate, endDate, ticker):
     data = dataObject.get_data(tradingDays, ticker, keys)
 
     return data[0].values[0:len(tradingDays),0]
+
+def getNormalizedCloseValuesForTicker(startDate, endDate, ticker):
+    adjustedClose = getAdjustedCloseValuesForTicker(startDate, endDate, ticker)
+    adjustedClose = adjustedClose / adjustedClose[0]
+    return adjustedClose
+
+    
 # >>> import collections
 # >>> point = collections.namedtuple('Point', ['x', 'y'])
 # >>> p = point(1, y=2)

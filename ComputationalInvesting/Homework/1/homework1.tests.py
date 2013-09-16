@@ -54,6 +54,14 @@ class TestSequenceFunctions(unittest.TestCase):
             adjustedCloseValues = homework1.getAdjustedCloseValuesForTicker(startDate, endDate, [ticker])
             self.assertEquals(len(adjustedCloseValues),252)
 
+    def test_get_normalized_close(self):
+        startDate = dt.datetime(2011, 1, 1)
+        endDate = dt.datetime(2011, 12, 31)
+        ticker = ["AAPL"]
+        normalizedCloseValues = homework1.getNormalizedCloseValuesForTicker(startDate, endDate, ticker)
+        self.assertEquals(len(normalizedCloseValues),252)
+        self.assertEquals(1, normalizedCloseValues[0])        
+
 
 
                     
