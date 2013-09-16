@@ -21,11 +21,30 @@ import pandas as pd
 import numpy as np
 
 def simulate(startDate, endDate, tickers, allocations):
-    #tradingDays = getTradingDays(startDate, endDate)
+    tradingDays = getTradingDays(startDate, endDate)
+    numberOfTradingDays = len(tradingDays)
+    # Keys to be read from the data, it is good to read everything in one go.
+    keys = ['close']
+    dataObject = da.DataAccess('Yahoo')
+    data = dataObject.get_data(tradingDays, tickers, keys)
+
+    # assuming there is at least one ticker
+    finalNormalizedData = np.zeros(numberOfTradingDays)
+    for x in range(0, 4):
+        # get the data for the ticker
+        normalizedData = data[0].values[:,x]
+        # normalize the data
+        normalizedData = normalizedData / normalizedData[0]
+        # allocate the appropriate percentage
+        normalizedData = normalizedData * allocations[x]
+        # add the normalizedData to the finalized array
+        finalNormalizedData = finalNormalizedData + normalizedData
+
     vol = 0
     daily_ret = 1
     sharpe = 2
-    cum_ret = 3
+    cum_ret = finalNormalizedData[numberOfTradingDays - 1]
+
     return(vol, daily_ret, sharpe, cum_ret)
 
 def getTradingDays(startDate, endDate):
@@ -35,25 +54,18 @@ def getTradingDays(startDate, endDate):
     tradingDays = du.getNYSEdays(startDate, endDate, timeofday)
     return tradingDays
 
-def getAdjustedCloseValuesForTicker(startDate, endDate, ticker):
+def getAdjustedCloseValuesForTickers(startDate, endDate, tickers):
     tradingDays = getTradingDays(startDate, endDate)
     # Keys to be read from the data, it is good to read everything in one go.
     keys = ['close']
     dataObject = da.DataAccess('Yahoo')
-    data = dataObject.get_data(tradingDays, ticker, keys)
+    data = dataObject.get_data(tradingDays, tickers, keys)
 
     return data[0].values[0:len(tradingDays),0]
 
-def getNormalizedCloseValuesForTicker(startDate, endDate, ticker):
-    adjustedClose = getAdjustedCloseValuesForTicker(startDate, endDate, ticker)
+def getNormalizedCloseValuesForTickers(startDate, endDate, tickers):
+    adjustedClose = getAdjustedCloseValuesForTickers(startDate, endDate, tickers)
     adjustedClose = adjustedClose / adjustedClose[0]
     return adjustedClose
 
-    
-# >>> import collections
-# >>> point = collections.namedtuple('Point', ['x', 'y'])
-# >>> p = point(1, y=2)
-# >>> p.x, p.y
-# (1, 2)
-# >>> p[0], p[1]
-# (1, 2)
+

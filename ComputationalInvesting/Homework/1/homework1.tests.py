@@ -9,19 +9,10 @@ class TestSequenceFunctions(unittest.TestCase):
     def setUp(self):
         self.seq = range(10)
 
-    def test_simulate_return_four_values(self):
-        try:
-            vol, daily_ret, sharpe, cum_ret = homework1.simulate('1/1/1', '2/2/2', ['GOOG','AAPL','GLD','XOM'], [0.2,0.3,0.4,0.1])
-        except ValueError:
-            print("Four return values expected!")
-            self.assertEquals(0, 1)
-
-        self.assertEquals(1, 1)
-
-    def test_send_in_real_data(self):
+    def test_sending_real_data_into_simulate_does_not_cause_exception(self):
         tickers = ["AAPL", "GLD", "GOOG", "$SPX"]
-        startDate = dt.datetime(2006, 1, 1)
-        endDate = dt.datetime(2010, 12, 31)
+        startDate = dt.datetime(2011, 1, 1)
+        endDate = dt.datetime(2011, 12, 31)
         allocations = [0.4, 0.4, 0.0, 0.2]
         vol, daily_ret, sharpe, cum_ret = homework1.simulate(startDate, endDate, tickers, allocations)        
 
@@ -51,17 +42,38 @@ class TestSequenceFunctions(unittest.TestCase):
         tickers = ["AAPL", "GLD", "GOOG", "$SPX"]
 
         for ticker in tickers:
-            adjustedCloseValues = homework1.getAdjustedCloseValuesForTicker(startDate, endDate, [ticker])
+            adjustedCloseValues = homework1.getAdjustedCloseValuesForTickers(startDate, endDate, [ticker])
             self.assertEquals(len(adjustedCloseValues),252)
 
     def test_get_normalized_close(self):
         startDate = dt.datetime(2011, 1, 1)
         endDate = dt.datetime(2011, 12, 31)
         ticker = ["AAPL"]
-        normalizedCloseValues = homework1.getNormalizedCloseValuesForTicker(startDate, endDate, ticker)
+        normalizedCloseValues = homework1.getNormalizedCloseValuesForTickers(startDate, endDate, ticker)
         self.assertEquals(len(normalizedCloseValues),252)
-        self.assertEquals(1, normalizedCloseValues[0])        
+        self.assertEquals(1, normalizedCloseValues[0])    
 
+    def test_get_expected_cumulative_return(self):
+        tickers = ['AAPL', 'GLD', 'GOOG', 'XOM']
+        startDate = dt.datetime(2011, 1, 1)
+        endDate = dt.datetime(2011, 12, 31)
+        allocations = [0.4, 0.4, 0.0, 0.2]
+        vol, daily_ret, sharpe, cum_ret = homework1.simulate(startDate, endDate, tickers, allocations)  
+
+        print cum_ret
+        self.assertAlmostEqual(cum_ret, 1.16487261965)
+    
+    # def test_get_expected_results_from_simulate(self):
+    #     tickers = ["AAPL", "GLD", "GOOG", "$SPX"]
+    #     startDate = dt.datetime(2006, 1, 1)
+    #     endDate = dt.datetime(2010, 12, 31)
+    #     allocations = [0.4, 0.4, 0.0, 0.2]
+    #     vol, daily_ret, sharpe, cum_ret = homework1.simulate(startDate, endDate, tickers, allocations)  
+
+    #     self.assertEquals(vol, 0.00924299255937
+    #     self.assertEquals(daily_ret, 0.000756285585593)
+    #     self.assertEquals(sharpe, 1.29889334008)
+    #     self.assertEquals(cum_ret, 1.1960583568)
 
 
                     
