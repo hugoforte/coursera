@@ -60,9 +60,17 @@ class TestSequenceFunctions(unittest.TestCase):
         allocations = [0.4, 0.4, 0.0, 0.2]
         vol, daily_ret, sharpe, cum_ret = homework1.simulate(startDate, endDate, tickers, allocations)  
 
-        print cum_ret
         self.assertAlmostEqual(cum_ret, 1.16487261965)
     
+    
+    def test_get_expected_daily_return(self):
+        tickers = ['AAPL', 'GLD', 'GOOG', 'XOM']
+        startDate = dt.datetime(2011, 1, 1)
+        endDate = dt.datetime(2011, 12, 31)
+        allocations = [0.4, 0.4, 0.0, 0.2]
+        vol, daily_ret, sharpe, cum_ret = homework1.simulate(startDate, endDate, tickers, allocations)  
+        print daily_ret
+        self.assertAlmostEqual(daily_ret, 0.000657261102001)
     # def test_get_expected_results_from_simulate(self):
     #     tickers = ["AAPL", "GLD", "GOOG", "$SPX"]
     #     startDate = dt.datetime(2006, 1, 1)

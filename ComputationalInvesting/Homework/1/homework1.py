@@ -30,7 +30,7 @@ def simulate(startDate, endDate, tickers, allocations):
 
     # assuming there is at least one ticker
     finalNormalizedData = np.zeros(numberOfTradingDays)
-    for x in range(0, 4):
+    for x in range(0, len(tickers)):
         # get the data for the ticker
         normalizedData = data[0].values[:,x]
         # normalize the data
@@ -40,12 +40,15 @@ def simulate(startDate, endDate, tickers, allocations):
         # add the normalizedData to the finalized array
         finalNormalizedData = finalNormalizedData + normalizedData
 
-    vol = 0
-    daily_ret = 1
+    cum_ret = finalNormalizedData[numberOfTradingDays - 1]\
+    # calculate average daily return
+    tsu.returnize0(finalNormalizedData)
+    volatility = np.std(finalNormalizedData)
+    avg_daily_return = np.average(finalNormalizedData)
     sharpe = 2
-    cum_ret = finalNormalizedData[numberOfTradingDays - 1]
+    
 
-    return(vol, daily_ret, sharpe, cum_ret)
+    return(volatility, avg_daily_return, sharpe, cum_ret)
 
 def getTradingDays(startDate, endDate):
     timeofday = dt.timedelta(hours=16)
