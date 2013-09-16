@@ -90,20 +90,18 @@ class TestSequenceFunctions(unittest.TestCase):
         
         self.assertAlmostEqual(sharpe, 1.02828403099)
 
-    # def test_get_expected_results_from_simulate(self):
-    #     tickers = ["AAPL", "GLD", "GOOG", "$SPX"]
-    #     startDate = dt.datetime(2006, 1, 1)
-    #     endDate = dt.datetime(2010, 12, 31)
-    #     allocations = [0.4, 0.4, 0.0, 0.2]
-    #     vol, daily_ret, sharpe, cum_ret = homework1.simulate(startDate, endDate, tickers, allocations)  
 
-    #     self.assertEquals(vol, 0.00924299255937
-    #     self.assertEquals(daily_ret, 0.000756285585593)
-    #     self.assertEquals(sharpe, 1.29889334008)
-    #     self.assertEquals(cum_ret, 1.1960583568)
-
-
-                    
+    def test_full_simulate(self):
+        tickers = ['AXP', 'HPQ', 'IBM', 'HNZ']
+        startDate = dt.datetime(2010, 1, 1)
+        endDate = dt.datetime(2010, 12, 31)
+        allocations = [0.0, 0.0, 0.0, 1.0]
+        vol, daily_ret, sharpe, cum_ret = homework1.simulate(startDate, endDate, tickers, allocations)  
+        
+        self.assertAlmostEqual(sharpe, 1.29889334008)
+        self.assertAlmostEqual(vol, 0.00924299255937)
+        self.assertAlmostEqual(daily_ret, 0.000756285585593)
+        self.assertAlmostEqual(cum_ret, 1.1960583568)                    
 
 if __name__ == '__main__':
     unittest.main()
